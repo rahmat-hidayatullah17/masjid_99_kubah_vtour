@@ -288,3 +288,5 @@ The source image should be a 360-degree equirectangular panorama (normally 2:1).
 - <https://docs.github.com/en/rest/pages/pages>
 - <https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site>
 >>>>>>> 61a353f (initial commit)
+#   m a s j i d _ 9 9 _ k u b a h _ v t o u r  
+ 
