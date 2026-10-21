@@ -15,6 +15,25 @@ Website dibuat menggunakan HTML, CSS, dan JavaScript dengan bantuan pustaka Pann
 - Menampilkan kontrol navigasi dan layar penuh.
 - Dapat diakses melalui browser setelah website dipublikasikan.
 
+## Fitur Website
+
+- Menampilkan delapan lokasi Masjid 99 Kubah Makassar.
+- Menyediakan hotspot informasi yang menampilkan penjelasan setiap lokasi.
+- Menyediakan hotspot navigasi untuk berpindah ke lokasi sebelumnya atau berikutnya.
+- Menyediakan tombol pilihan lokasi.
+- Mendukung kontrol arah pandang, zoom, dan layar penuh.
+- Menampilkan informasi lokasi yang sedang dikunjungi.
+- Menggunakan Pannellum 2.5.7 untuk menampilkan panorama interaktif.
+
+## Teknologi yang Digunakan
+
+- HTML untuk struktur halaman.
+- CSS untuk desain dan tata letak.
+- JavaScript untuk interaksi, informasi lokasi, dan navigasi.
+- Pannellum 2.5.7 untuk penampil panorama.
+- Git dan GitHub untuk pengelolaan kode.
+- GitHub Pages untuk publikasi website.
+
 ## Struktur Proyek
 
 ```text
