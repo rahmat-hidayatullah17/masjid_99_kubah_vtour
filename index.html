@@ -1,75 +1,792 @@
-<!doctype html>
-<html lang="en">
+
+<!DOCTYPE html>
+<html lang="id">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>My Campus 360 Tour</title>
-  <!-- Pannellum loads from the CDN; an internet connection is required. -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pannellum@2.5.7/build/pannellum.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Virtual Tour Masjid 99 Kubah Makassar</title>
+  <meta name="description" content="Jelajahi Masjid 99 Kubah Makassar melalui virtual tour panorama 360 derajat.">
+
+  <!-- Pannellum panorama viewer -->
+  <link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/pannellum@2.5.7/build/pannellum.css"
+  >
   <script src="https://cdn.jsdelivr.net/npm/pannellum@2.5.7/build/pannellum.js"></script>
+
   <style>
-    * { box-sizing: border-box; }
-    body { margin: 0; font-family: Arial, Helvetica, sans-serif; background: #0f172a; color: #fff; }
-    header { padding: 14px 22px; background: #17243a; }
-    h1 { margin: 0; font-size: 1.35rem; }
-    .intro { margin: 6px 0 0; color: #d3e2f1; font-size: .95rem; }
-    #panorama { width: 100%; height: calc(100vh - 116px); min-height: 380px; }
-    footer { min-height: 46px; padding: 13px 22px; background: #17243a; color: #cbd5e1; font-size: .86rem; }
-    footer span { color: #9bd8f2; font-weight: bold; }
+    :root {
+      --primary: #145b43;
+      --primary-dark: #0b392b;
+      --accent: #d5b56a;
+      --background: #f4f6f2;
+      --surface: #ffffff;
+      --text: #24342c;
+      --muted: #66746b;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: var(--background);
+      color: var(--text);
+    }
+
+    button {
+      font: inherit;
+    }
+
+    .hero {
+      position: relative;
+      padding: 35px 20px;
+      text-align: center;
+      color: white;
+      background:
+        linear-gradient(
+          135deg,
+          rgba(8, 48, 35, 0.97),
+          rgba(20, 91, 67, 0.94)
+        );
+      border-bottom: 4px solid var(--accent);
+    }
+
+    .hero .eyebrow {
+      margin: 0 0 10px;
+      color: #e8d7a6;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      font-size: 12px;
+      font-weight: bold;
+    }
+
+    .hero h1 {
+      margin: 0;
+      font-size: clamp(25px, 4vw, 40px);
+      line-height: 1.2;
+    }
+
+    .hero p {
+      max-width: 650px;
+      margin: 14px auto 0;
+      line-height: 1.7;
+      color: #edf5ef;
+    }
+
+    .hero-decoration {
+      margin-top: 18px;
+      color: var(--accent);
+      font-size: 25px;
+      letter-spacing: 8px;
+    }
+
+    main {
+      width: min(1150px, 94%);
+      margin: 28px auto;
+    }
+
+    .section-heading {
+      margin-bottom: 18px;
+      text-align: center;
+    }
+
+    .section-heading h2 {
+      margin: 0 0 8px;
+      color: var(--primary-dark);
+      font-size: 25px;
+    }
+
+    .section-heading p {
+      max-width: 700px;
+      margin: 0 auto;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    .viewer-card {
+      padding: 14px;
+      overflow: hidden;
+      background: var(--surface);
+      border: 1px solid #e0e7e0;
+      border-radius: 16px;
+      box-shadow: 0 8px 28px rgba(20, 50, 35, 0.09);
+    }
+
+    .viewer-topbar {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 5px 4px 13px;
+    }
+
+    .viewer-label {
+      color: var(--primary);
+      font-size: 13px;
+      font-weight: bold;
+    }
+
+    .viewer-tip {
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    #panorama {
+      width: 100%;
+      height: min(65vh, 600px);
+      min-height: 350px;
+      overflow: hidden;
+      background: #dfe5df;
+      border-radius: 10px;
+    }
+
+    .location-info {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 18px 5px 5px;
+    }
+
+    .location-info h3 {
+      margin: 0 0 6px;
+      color: var(--primary-dark);
+      font-size: 21px;
+    }
+
+    .location-info p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
+    .location-count {
+      padding: 9px 13px;
+      color: var(--primary);
+      background: #e8f1eb;
+      border-radius: 30px;
+      font-size: 13px;
+      font-weight: bold;
+      white-space: nowrap;
+    }
+
+    .navigation-section {
+      margin-top: 30px;
+    }
+
+    .navigation-section h2,
+    .instructions h2,
+    .about h2 {
+      margin: 0 0 10px;
+      color: var(--primary-dark);
+      font-size: 21px;
+    }
+
+    .navigation-section > p {
+      margin: 0 0 16px;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .location-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .location-button {
+      min-height: 76px;
+      padding: 14px 10px;
+      text-align: left;
+      color: var(--text);
+      background: white;
+      border: 1px solid #dce5dd;
+      border-radius: 10px;
+      cursor: pointer;
+      transition:
+        background 0.2s,
+        border-color 0.2s,
+        transform 0.2s;
+    }
+
+    .location-button:hover {
+      border-color: var(--primary);
+      transform: translateY(-2px);
+    }
+
+    .location-button.active {
+      color: white;
+      background: var(--primary);
+      border-color: var(--primary);
+    }
+
+    .location-button .number {
+      display: block;
+      margin-bottom: 7px;
+      color: var(--primary);
+      font-size: 11px;
+      font-weight: bold;
+    }
+
+    .location-button.active .number {
+      color: #f2d99c;
+    }
+
+    .location-button .name {
+      font-size: 14px;
+      font-weight: bold;
+    }
+
+    .step-controls {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      margin-top: 16px;
+    }
+
+    .step-button {
+      padding: 12px 18px;
+      color: white;
+      background: var(--primary);
+      border: 0;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    .step-button:hover {
+      background: var(--primary-dark);
+    }
+
+    .step-button:disabled {
+      opacity: 0.45;
+      cursor: not-allowed;
+    }
+
+    .content-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+      margin-top: 28px;
+    }
+
+    .instructions,
+    .about {
+      padding: 22px;
+      background: white;
+      border: 1px solid #e0e7e0;
+      border-radius: 12px;
+    }
+
+    .instructions ul {
+      margin: 12px 0 0;
+      padding-left: 21px;
+    }
+
+    .instructions li {
+      margin: 10px 0;
+      line-height: 1.6;
+    }
+
+    .about p {
+      margin: 10px 0 0;
+      color: var(--muted);
+      line-height: 1.8;
+    }
+
+    .status-message {
+      display: none;
+      margin-top: 12px;
+      padding: 12px;
+      color: #783f13;
+      background: #fff2dc;
+      border-radius: 8px;
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
+    .status-message.visible {
+      display: block;
+    }
+
+    footer {
+      margin-top: 38px;
+      padding: 25px 18px;
+      color: #e8f1eb;
+      text-align: center;
+      background: var(--primary-dark);
+      line-height: 1.7;
+    }
+
+    footer strong {
+      color: #f0d99d;
+    }
+
+    @media (max-width: 800px) {
+      .location-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .content-grid {
+        grid-template-columns: 1fr;
+      }
+
+      #panorama {
+        height: 55vh;
+        min-height: 320px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .hero {
+        padding: 28px 15px;
+      }
+
+      main {
+        width: 94%;
+        margin-top: 20px;
+      }
+
+      .viewer-card {
+        padding: 9px;
+      }
+
+      #panorama {
+        min-height: 280px;
+      }
+
+      .location-button {
+        min-height: 70px;
+      }
+
+      .step-button {
+        padding: 11px;
+        font-size: 13px;
+      }
+    }
   </style>
 </head>
+
 <body>
-  <header>
-    <h1>Campus 360 | Interactive Virtual Tour</h1>
-    <p class="intro">Drag to look around. Click arrows to change locations; click info icons for explanations.</p>
+  <!-- Header website -->
+  <header class="hero">
+    <p class="eyebrow">Wisata Religi · Makassar, Sulawesi Selatan</p>
+    <h1>Virtual Tour Masjid 99 Kubah</h1>
+    <p>
+      Jelajahi keindahan Masjid 99 Kubah melalui pengalaman
+      panorama 360 derajat dan kunjungi berbagai area masjid
+      secara virtual.
+    </p>
+    <div class="hero-decoration" aria-hidden="true">✦ ✧ ✦</div>
   </header>
-  <main><div id="panorama" aria-label="Interactive 360-degree campus tour"></div></main>
-  <footer>Built with <span>Pannellum</span>, <span>Git</span> and <span>GitHub Pages</span>.</footer>
+
+  <main>
+    <!-- Pengantar -->
+    <section class="section-heading">
+      <h2>Jelajahi Masjid 99 Kubah</h2>
+      <p>
+        Pilih lokasi yang ingin dikunjungi. Geser panorama untuk
+        melihat sekeliling, dan gunakan kontrol zoom untuk
+        memperbesar atau memperkecil tampilan.
+      </p>
+    </section>
+
+    <!-- Panorama utama -->
+    <section class="viewer-card" aria-label="Penjelajah panorama masjid">
+      <div class="viewer-topbar">
+        <span class="viewer-label">PANORAMA 360°</span>
+        <span class="viewer-tip">Geser gambar untuk melihat sekeliling</span>
+      </div>
+
+      <div
+        id="panorama"
+        role="img"
+        aria-label="Panorama lokasi Masjid 99 Kubah"
+      ></div>
+
+      <div id="statusMessage" class="status-message" role="status"></div>
+
+      <div class="location-info">
+        <div>
+          <h3 id="locationName">Titik Tengah</h3>
+          <p id="locationDescription">
+            Tampilan panorama dari titik tengah.
+          </p>
+        </div>
+        <span class="location-count" id="locationCount">
+          Lokasi 1 dari 8
+        </span>
+      </div>
+    </section>
+
+    <!-- Navigasi delapan lokasi -->
+    <section class="navigation-section">
+      <h2>Pilih Lokasi</h2>
+      <p>
+        Gunakan daftar berikut untuk berpindah ke area lain
+        dalam virtual tour.
+      </p>
+
+      <div class="location-grid" id="locationGrid">
+        <button class="location-button active"
+                type="button" data-scene="titik-tengah">
+          <span class="number">LOKASI 01</span>
+          <span class="name">Titik Tengah</span>
+        </button>
+
+        <button class="location-button"
+                type="button" data-scene="teras-kiri">
+          <span class="number">LOKASI 02</span>
+          <span class="name">Teras Kiri</span>
+        </button>
+
+        <button class="location-button"
+                type="button" data-scene="teras-kanan">
+          <span class="number">LOKASI 03</span>
+          <span class="name">Teras Kanan</span>
+        </button>
+
+        <button class="location-button"
+                type="button" data-scene="teras-depan">
+          <span class="number">LOKASI 04</span>
+          <span class="name">Teras Depan</span>
+        </button>
+
+        <button class="location-button"
+                type="button" data-scene="samping-kanan">
+          <span class="number">LOKASI 05</span>
+          <span class="name">Samping Kanan</span>
+        </button>
+
+        <button class="location-button"
+                type="button" data-scene="pintu-samping">
+          <span class="number">LOKASI 06</span>
+          <span class="name">Pintu Samping</span>
+        </button>
+
+        <button class="location-button"
+                type="button" data-scene="pintu-depan">
+          <span class="number">LOKASI 07</span>
+          <span class="name">Pintu Depan</span>
+        </button>
+
+        <button class="location-button"
+                type="button" data-scene="bagian-depan">
+          <span class="number">LOKASI 08</span>
+          <span class="name">Bagian Depan</span>
+        </button>
+      </div>
+
+      <div class="step-controls">
+        <button id="previousButton" class="step-button" type="button">
+          ← Lokasi Sebelumnya
+        </button>
+        <button id="nextButton" class="step-button" type="button">
+          Lokasi Berikutnya →
+        </button>
+      </div>
+    </section>
+
+    <!-- Petunjuk penggunaan -->
+    <div class="content-grid">
+      <section class="instructions">
+        <h2>Petunjuk Penggunaan</h2>
+        <ul>
+          <li>
+            <strong>Melihat sekeliling:</strong>
+            klik dan geser panorama menggunakan mouse atau jari.
+          </li>
+          <li>
+            <strong>Memperbesar tampilan:</strong>
+            gunakan kontrol zoom pada panorama.
+          </li>
+          <li>
+            <strong>Berpindah lokasi:</strong>
+            pilih salah satu dari delapan tombol lokasi.
+          </li>
+          <li>
+            <strong>Navigasi berurutan:</strong>
+            gunakan tombol lokasi sebelumnya dan berikutnya.
+          </li>
+        </ul>
+      </section>
+
+      <section class="about">
+        <h2>Tentang Virtual Tour</h2>
+        <p>
+          Virtual tour ini dibuat untuk membantu pengunjung
+          mengenali berbagai sudut Masjid 99 Kubah di Makassar
+          melalui media digital interaktif.
+        </p>
+        <p>
+          Website menggunakan Pannellum untuk menampilkan gambar
+          panorama. Kualitas pengalaman 360 derajat bergantung
+          pada format dan kualitas foto yang digunakan.
+        </p>
+      </section>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <strong>Virtual Tour Masjid 99 Kubah</strong>
+    <br>
+    Makassar, Sulawesi Selatan
+    <br>
+    <small>Panorama interaktif berbasis Pannellum</small>
+  </footer>
 
   <script>
-    pannellum.viewer("panorama", {
-      "default": {
-        "firstScene": "entrance",
-        "sceneFadeDuration": 700,
-        "autoLoad": true,
-        "hfov": 110,
-        "escapeHTML": true
-      },
-      "scenes": {
-        "entrance": {
-          "title": "Campus Entrance",
-          "type": "equirectangular",
-          "panorama": "images/entrance.jpg",
-          "yaw": 0,
-          "hotSpots": [
-            {"pitch": -5, "yaw": 14, "type": "scene", "text": "Go to Classroom", "sceneId": "classroom"},
-            {"pitch": 10, "yaw": -50, "type": "info", "text": "Welcome to our virtual campus tour!"}
-          ]
-        },
-        "classroom": {
-          "title": "Classroom",
-          "type": "equirectangular",
-          "panorama": "images/classroom.jpg",
-          "yaw": 0,
-          "hotSpots": [
-            {"pitch": -6, "yaw": 30, "type": "scene", "text": "Go to Library", "sceneId": "library"},
-            {"pitch": -6, "yaw": -110, "type": "scene", "text": "Back to Entrance", "sceneId": "entrance"},
-            {"pitch": 8, "yaw": 3, "type": "info", "text": "Students learn and work together here."}
-          ]
-        },
-        "library": {
-          "title": "Library",
-          "type": "equirectangular",
-          "panorama": "images/library.jpg",
-          "yaw": 0,
-          "hotSpots": [
-            {"pitch": -7, "yaw": -36, "type": "scene", "text": "Back to Classroom", "sceneId": "classroom"},
-            {"pitch": -7, "yaw": 100, "type": "scene", "text": "Return to Entrance", "sceneId": "entrance"},
-            {"pitch": 9, "yaw": 5, "type": "info", "text": "Study resources and reading spaces."}
-          ]
-        }
+    // ==========================================
+    // DATA DELAPAN LOKASI MASJID 99 KUBAH
+    // ==========================================
+
+    
+const locations = {
+  "titik-tengah": {
+    title: "Titik Tengah",
+    description: "Tampilan panorama dari titik tengah.",
+    image: "images/titik tengah.jpeg"
+  },
+
+  "teras-kiri": {
+    title: "Teras Kiri",
+    description: "Jelajahi area teras kiri masjid.",
+    image: "images/teras kiri.jpeg"
+  },
+
+  "teras-kanan": {
+    title: "Teras Kanan",
+    description: "Jelajahi area teras kanan masjid.",
+    image: "images/teras kanan.jpeg"
+  },
+
+  "teras-depan": {
+    title: "Teras Depan",
+    description: "Jelajahi area teras depan masjid.",
+    image: "images/teras depan.jpeg"
+  },
+
+  "samping-kanan": {
+    title: "Samping Kanan",
+    description: "Jelajahi bagian samping kanan masjid.",
+    image: "images/samping kanan.jpeg"
+  },
+
+  "pintu-samping": {
+    title: "Pintu Samping",
+    description: "Jelajahi area pintu samping masjid.",
+    image: "images/pintu samping.jpeg"
+  },
+
+  "pintu-depan": {
+    title: "Pintu Depan",
+    description: "Jelajahi area pintu depan masjid.",
+    image: "images/pintu depan.jpeg"
+  },
+
+  "bagian-depan": {
+    title: "Bagian Depan",
+    description: "Jelajahi bagian depan Masjid 99 Kubah.",
+    image: "images/bagian depan.jpeg"
+  }
+};
+
+    const sceneIds = Object.keys(locations);
+
+    // ==========================================
+    // KONFIGURASI SCENE PANNELLUM
+    // ==========================================
+
+    const scenes = {};
+
+    sceneIds.forEach((id, index) => {
+      scenes[id] = {
+        title: locations[id].title,
+        type: "equirectangular",
+        panorama: locations[id].image,
+        hotSpots: []
+      };
+
+      // Hotspot navigasi berurutan.
+      // Ini merupakan arah awal perkiraan, bukan hasil
+      // pengukuran posisi pintu atau area pada foto.
+      if (index > 0) {
+        scenes[id].hotSpots.push({
+          pitch: -5,
+          yaw: -35,
+          type: "scene",
+          text: "Lokasi sebelumnya: " +
+                locations[sceneIds[index - 1]].title,
+          sceneId: sceneIds[index - 1]
+        });
+      }
+
+      if (index < sceneIds.length - 1) {
+        scenes[id].hotSpots.push({
+          pitch: -5,
+          yaw: 35,
+          type: "scene",
+          text: "Lokasi berikutnya: " +
+                locations[sceneIds[index + 1]].title,
+          sceneId: sceneIds[index + 1]
+        });
       }
     });
+
+    // ==========================================
+    // INISIALISASI PANORAMA VIEWER
+    // ==========================================
+
+    const viewer = pannellum.viewer("panorama", {
+      default: {
+        firstScene: "titik-tengah",
+        sceneFadeDuration: 700,
+        autoLoad: true,
+        showControls: true,
+        showZoomCtrl: true,
+        showFullscreenCtrl: true,
+        keyboardZoom: true,
+        mouseZoom: true,
+        hfov: 110,
+        minHfov: 70,
+        maxHfov: 120
+      },
+
+      scenes: scenes
+    });
+
+    // ==========================================
+    // ELEMEN WEBSITE
+    // ==========================================
+
+    const locationName =
+      document.getElementById("locationName");
+
+    const locationDescription =
+      document.getElementById("locationDescription");
+
+    const locationCount =
+      document.getElementById("locationCount");
+
+    const statusMessage =
+      document.getElementById("statusMessage");
+
+    const locationButtons =
+      document.querySelectorAll(".location-button");
+
+    const previousButton =
+      document.getElementById("previousButton");
+
+    const nextButton =
+      document.getElementById("nextButton");
+
+    let currentScene = "titik-tengah";
+
+    // ==========================================
+    // MEMPERBARUI INFORMASI LOKASI
+    // ==========================================
+
+    function updateLocation(id) {
+      if (!locations[id]) {
+        return;
+      }
+
+      currentScene = id;
+
+      const location = locations[id];
+      const index = sceneIds.indexOf(id);
+
+      locationName.textContent = location.title;
+      locationDescription.textContent = location.description;
+      locationCount.textContent =
+        "Lokasi " + (index + 1) + " dari " + sceneIds.length;
+
+      locationButtons.forEach((button) => {
+        const isActive = button.dataset.scene === id;
+
+        button.classList.toggle("active", isActive);
+
+        if (isActive) {
+          button.setAttribute("aria-current", "location");
+        } else {
+          button.removeAttribute("aria-current");
+        }
+      });
+
+      previousButton.disabled = index === 0;
+      nextButton.disabled = index === sceneIds.length - 1;
+
+      statusMessage.classList.remove("visible");
+      statusMessage.textContent = "";
+    }
+
+    // ==========================================
+    // BERPINDAH LOKASI
+    // ==========================================
+
+    function goToLocation(id) {
+      if (!locations[id]) {
+        return;
+      }
+
+      viewer.loadScene(id);
+      updateLocation(id);
+    }
+
+    locationButtons.forEach((button) => {
+      button.addEventListener("click", () => {
+        goToLocation(button.dataset.scene);
+      });
+    });
+
+    previousButton.addEventListener("click", () => {
+      const index = sceneIds.indexOf(currentScene);
+
+      if (index > 0) {
+        goToLocation(sceneIds[index - 1]);
+      }
+    });
+
+    nextButton.addEventListener("click", () => {
+      const index = sceneIds.indexOf(currentScene);
+
+      if (index < sceneIds.length - 1) {
+        goToLocation(sceneIds[index + 1]);
+      }
+    });
+
+    // Sinkronkan informasi jika scene berubah
+    // melalui hotspot Pannellum.
+    viewer.on("scenechange", (id) => {
+      updateLocation(id);
+    });
+
+    // ==========================================
+    // MENANGANI KESALAHAN PEMUATAN FOTO
+    // ==========================================
+
+    viewer.on("error", (errorMessage) => {
+      statusMessage.textContent =
+        "Panorama tidak dapat dimuat. Periksa nama file, " +
+        "ekstensi .JPEG, folder images, dan koneksi internet " +
+        "untuk pustaka Pannellum. Detail: " + errorMessage;
+
+      statusMessage.classList.add("visible");
+    });
+
+    // Lokasi awal
+    updateLocation("titik-tengah");
   </script>
 </body>
 </html>
